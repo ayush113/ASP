@@ -13,6 +13,7 @@ using crypto;
 
 public partial class Views_Register : System.Web.UI.Page
 {
+    //Sender ID for sending verification Email
     private static string sender = "ayush.work113@gmail.com";
     private static string a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12,pass,fpath,a13;
     private static int vcode,flag=0;
@@ -26,6 +27,8 @@ public partial class Views_Register : System.Web.UI.Page
         }
     }
 
+    // Validation function to ensure that username
+    // is longer than 6 letters
     protected void Sizecheck(object sender,ServerValidateEventArgs e)
     {
         string name = this.uname.Text;
@@ -51,6 +54,15 @@ public partial class Views_Register : System.Web.UI.Page
             e.IsValid = true;
         }
     }
+
+    /*
+     *  execute Method:
+     *  Inserts the registration details obtained from the page
+     *  into the database.
+     *  
+     *  Called only after all server and client side validations have been performed
+     *  
+     */
 
     protected void execute(string username,string password,string name,string gender,string address1,string address2,string city,string state,string pin,string mobile,string telephone, string email,string dob,string Image,string CreatedOn,string SecurityQuestion)
     {
@@ -116,6 +128,14 @@ public partial class Views_Register : System.Web.UI.Page
             conn.Close();
         }
     }
+
+    /*
+     *  Register_onClick Method:
+     *  
+     *  Takes care of validation.
+     *  Ensures uniqueness of Email ID, username and Mobile Number.
+     *  
+     */ 
 
     protected void Register_onClick(object Sender,EventArgs e)
     {

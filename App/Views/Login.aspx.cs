@@ -12,7 +12,7 @@ using System.Net;
 
 public partial class Views_Login : System.Web.UI.Page
 {
-    //Email ID for user email verification
+    //Sender Email ID for password reset
     private static string sender = "ayush.work113@gmail.com",user;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -378,7 +378,7 @@ public partial class Views_Login : System.Web.UI.Page
     /*
      *  addDetails Method:
      *  
-     *  
+     *  This method is used to add user information ontained at the first login.
      * 
      */
     protected void addDetails()
@@ -424,6 +424,13 @@ public partial class Views_Login : System.Web.UI.Page
         cmd.ExecuteNonQuery();
         conn.Close();
     }
+
+    /*
+     *  First_Click Method:
+     *  
+     *  Calls the add details function which handles addition of details.
+     * 
+     */ 
 
     protected void First_Click(object sender, EventArgs e)
     {

@@ -9,6 +9,7 @@ using System.Data;
 
 public partial class Views_Page : System.Web.UI.Page
 {
+    // This string stores the Database connection information
     private static string connstr = System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString1"].ConnectionString;
     private int quit = 0;
     protected void Page_Load(object sender, EventArgs e)
@@ -17,18 +18,28 @@ public partial class Views_Page : System.Web.UI.Page
     }
     protected void Page_Init(object sender,EventArgs e)
     {
-        if(Session["username"] == null)
+        // Redirect to home if no credentials are provided
+
+        if (Session["username"] == null)
         {
             Response.Redirect("~/Views/Home.aspx?flag=1");
             return;
         }
+
+        // Redirect to normal user page, if credentials don't allow for admin access
+
         if((Session["admin"] == null) || Session["admin"].ToString() == "False")
         {
             Response.Redirect("~/Views/user.aspx");
             return;
         }
     }
-    
+
+    /*
+     *  Logout Button Event Handler
+     *  Destroys Credewntial Data and Redirects to Login Page
+     * 
+     */
     protected void Button1_Click(object sender, EventArgs e)
     {
         Session.Abandon();
@@ -42,6 +53,12 @@ public partial class Views_Page : System.Web.UI.Page
             Session.Abandon();
         }
     }
+
+    /*
+     *  exists Method:
+     *  Utility function to check if an user exists
+     * 
+     */
 
     protected int exists(string uid)
     {
@@ -61,6 +78,11 @@ public partial class Views_Page : System.Web.UI.Page
             return -1;
     }
 
+    /*
+     *  delete_Click Method:
+     *  Method for deleting the user details
+     *  User Data is not actually deleted, but an edit is made in the database
+     */
     protected void delete_Click(object sender, ImageClickEventArgs e)
     {
         string id = uid.Text;
@@ -87,6 +109,8 @@ public partial class Views_Page : System.Web.UI.Page
         
     }
 
+
+    
     protected void view_Click(object sender, ImageClickEventArgs e)
     {
 
