@@ -14,6 +14,9 @@ public partial class Views_attendance : System.Web.UI.Page
 
     }
 
+    /*
+     *This method is used to update the attendance record in the database
+     */
     protected void attend_Click(object sender, EventArgs e)
     {
         SqlConnection conn = new SqlConnection();

@@ -12,10 +12,15 @@ using System.Net;
 
 public partial class Views_Login : System.Web.UI.Page
 {
+    //Email ID for user email verification
     private static string sender = "ayush.work113@gmail.com",user;
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
+        // Different views in the login page are loaded 
+        // based on the users login information
+
 
         if (Request.QueryString["view"] == "2")
         {
@@ -32,12 +37,24 @@ public partial class Views_Login : System.Web.UI.Page
     }
     protected void Page_Init(object sender,EventArgs e)
     {
-        if(Request.QueryString["out"] == "1")
+        //Logout action redirects to this page
+
+        if (Request.QueryString["out"] == "1")
         {
             lblmsg.ForeColor = System.Drawing.Color.Red;
             lblmsg.Text = "You have been logged out";
         }
     }
+
+    /*  
+     *  This method provides the login functionality.
+     *  Checks if the username and password combination is valid.
+     *  Checks if the user is logging in for the first time.
+     *  Checks if the user has been locked out by the admininstrator
+     *  Checks if the user has been deleted by the administrator
+     *  Keeps track of unsuccessful attempts and locks the user out in case it exceeds counter
+     */
+
     protected void login_Click(object sender, EventArgs e)
     {
         SqlDataSource sds = new SqlDataSource();
@@ -108,6 +125,14 @@ public partial class Views_Login : System.Web.UI.Page
         }
     }
 
+    /*
+     *  CreateLogEntry Method:
+     *  
+     *  Creates a log entry in the database
+     *  Adds inofrmation realted to current session of the user
+     * 
+     */
+
     private void CreateLogEntry(string v)
     {
         string SID = HttpContext.Current.Session.SessionID;
@@ -137,6 +162,14 @@ public partial class Views_Login : System.Web.UI.Page
         cmd.ExecuteNonQuery();
     }
 
+    /*
+     *  GetMACAddress Method:
+     *  
+     *  This method is used to obtain MAC address which is used as Machine ID
+     *  identifier in the log entries of the application
+     * 
+     */
+
     public string GetMACAddress()
     {
         NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
@@ -151,6 +184,14 @@ public partial class Views_Login : System.Web.UI.Page
         }
         return sMacAddress;
     }
+
+    /*
+     *  UpdateCounter Method:
+     *  
+     *  This method updates the user's false attempt counter in the database.
+     *  Locks the user out if the number of false attempts reaches 3.
+     *  
+     */
 
     protected void UpdateCounter(string uname)
     {
@@ -197,7 +238,14 @@ public partial class Views_Login : System.Web.UI.Page
         
     }
 
-
+    /*
+     *  submit_Click Method:
+     *  
+     *  Submits the reset password details from the page view.
+     *  Verfies if the information provided for resetting the password is accurate.
+     *  Calls function to send Email with password information
+     *  
+     */
     protected void submit_Click(object sender, EventArgs e)
     {
         string uname = name.Text;
@@ -233,6 +281,12 @@ public partial class Views_Login : System.Web.UI.Page
 
     }
 
+    /*
+     *  sendmail Method:
+     * 
+     *  This method is used to send password information to users by Email.
+     * 
+     */
     private void sendmail(string email,string passw)
     {
         MailMessage mail = new MailMessage();
@@ -253,6 +307,13 @@ public partial class Views_Login : System.Web.UI.Page
         smtp.Send(mail);
     }
 
+    /*
+     *  cont_Click Method:
+     *  
+     *  This method is used to obtain relevant details from user when he logs in for the first time.
+     *  Details left empty by the administartor are filled here
+     * 
+     */
     protected void cont_Click(object sender, EventArgs e)
     {
         msg.Text = "";
@@ -313,6 +374,13 @@ public partial class Views_Login : System.Web.UI.Page
         }
     }
     
+
+    /*
+     *  addDetails Method:
+     *  
+     *  
+     * 
+     */
     protected void addDetails()
     {
         string password = crypto.encryption_decryption.Encrypt(pwd.Text);
